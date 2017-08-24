@@ -12,7 +12,7 @@ Juliana
 Juliana, Fabiana, Brutus
 Fernanda, Fabiana, Brutus
 Fernanda, Brutus
-Ferrão, Brutus
+Ferrao, Brutus
 Brutus
 Ana_Claudia, Fabiana, Brutus
 Fernanda, Fabiana, Brutus
@@ -21,4 +21,3 @@ Juliana, Brutus
 Fernanda, Fabiana, Brutus
 Fernanda, Brutus
 Juliana, Fabiana, Brutus
-fim

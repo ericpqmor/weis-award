@@ -42,6 +42,8 @@ void WeisCalculator::Run() {
 
         if(input.is_open()) {
 
+            std::cout << inputFile << " foi encontrado" << std::endl;
+
             std::ofstream output;
             output.open(outputFile);
             std::string line;
@@ -69,11 +71,10 @@ void WeisCalculator::Run() {
 
                 //Weis Statistics Output
                 int numVotes = it->second;
-                std::cout << "numVotes " << numVotes << " totalVotes" << totalVotes << std::endl;
                 if(numVotes >= 0.85*totalVotes)
-                    specialOutput << "*" << it->first << "*" << " (" << std::setprecision(2) << 100.0*numVotes/totalVotes << "%) ";
+                    specialOutput << "*" << it->first << "*" << "(" << std::setprecision(2) << 100.0*numVotes/totalVotes << "%) ";
                 else if(numVotes >= 0.65*totalVotes)
-                    specialOutput << it->first << " (" << std::setprecision(2) << 100.0*numVotes/totalVotes << "%) ";
+                    specialOutput << it->first << "(" << std::setprecision(2) << 100.0*numVotes/totalVotes << "%) ";
             }
 
             //Class statistics
@@ -85,7 +86,7 @@ void WeisCalculator::Run() {
         }
 
         else
-            std::cout << inputFile << " could not be found" << std::endl;
+            std::cout << inputFile << " nao foi encontrado" << std::endl;
 
         //Separate years by blank line
         if(fileNum%4 == 3) specialOutput << std::endl;
