@@ -10,6 +10,7 @@
 #include <map>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 
 /**
  * WeisCalculator é o módulo de lógica do programa.
@@ -32,9 +33,8 @@ public:
 private:
     std::vector<std::string> inputFiles;
     std::map<std::string,int> teachers;
-    std::ifstream input;
-    std::ofstream output;
     std::string vote;
+
 
 };
 

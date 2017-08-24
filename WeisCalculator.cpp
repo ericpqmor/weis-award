@@ -28,6 +28,9 @@ char *WeisCalculator::GenerateWritable(std::string file) {
 
 void WeisCalculator::Run() {
 
+    //Initialize statistics output file
+    std::ofstream specialOutput("Weis_Statistics.txt");
+
     for(int fileNum = 0; fileNum < (int)inputFiles.size(); fileNum++) {
         std::string inputFile = inputFiles[fileNum];
         std::string outputFile = "Result_" + inputFile;
@@ -43,13 +46,13 @@ void WeisCalculator::Run() {
             output.open(outputFile);
             std::string line;
 
-            int vote_counter = 0;
+            int totalVotes = 0;
 
             while (getline(input,line)) {
+                totalVotes++;
                 std::istringstream iss(line);
 
                 while (iss >> vote) {
-                    vote_counter ++;
                     if (vote[vote.length() - 1] == ',')
                         vote.erase(vote.begin() + vote.length() - 1);
 
@@ -58,14 +61,34 @@ void WeisCalculator::Run() {
                 }
             }
 
-            for (auto it = teachers.begin(); it != teachers.end(); ++it)
-                output << it->first << ": " << it->second << std::endl;
+            //Special output
+            specialOutput << inputFile.substr(0,inputFile.length()-4) << " - ";
+
+            for (auto it = teachers.begin(); it != teachers.end(); ++it) {
+                output << it->first << ": " << it->second << " (" << std::setprecision(2) << 100.0*(it->second)/totalVotes << "%)" << std::endl;
+
+                //Weis Statistics Output
+                int numVotes = it->second;
+                std::cout << "numVotes " << numVotes << " totalVotes" << totalVotes << std::endl;
+                if(numVotes >= 0.85*totalVotes)
+                    specialOutput << "*" << it->first << "*" << " (" << std::setprecision(2) << 100.0*numVotes/totalVotes << "%) ";
+                else if(numVotes >= 0.65*totalVotes)
+                    specialOutput << it->first << " (" << std::setprecision(2) << 100.0*numVotes/totalVotes << "%) ";
+            }
+
+            //Class statistics
+            output << std::endl;
+            output << "Alunos que votaram: " << totalVotes << std::endl;
+
+
+            output.close();
         }
 
         else
             std::cout << inputFile << " could not be found" << std::endl;
 
-        output.close();
+        //Separate years by blank line
+        if(fileNum%4 == 3) specialOutput << std::endl;
     }
 }
 
