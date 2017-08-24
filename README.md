@@ -2,6 +2,9 @@
 Weis Award is a prize created to reward ITA (Aeronautics Institute of Technology) best teachers. The award is set every semester by ITA's DA (Academic Department).
 This software was made as an improve to Weis Award, allowing the results to be generated in a second, sparing the time necessary to count every student's vote. Also the software has a statistics tool to register vote percentages and useful data.
 
+## Useful Instructions
+There are more instructions on input and output files on in-out/Instructions.txt
+
 ## Requirements and Installing: 
 The simulator was developed in Ubuntu 14.04 platform. For any other Operational System the software code is not garanteed to work properly. For Linux-based systems, the steps regarding dependecies installing may vary.
 
