@@ -28,35 +28,44 @@ char *WeisCalculator::GenerateWritable(std::string file) {
 
 void WeisCalculator::Run() {
 
-    for(int fileNum = 0; fileNum < (int)inputFiles.size(); fileNum++)
-    {
+    for(int fileNum = 0; fileNum < (int)inputFiles.size(); fileNum++) {
         std::string inputFile = inputFiles[fileNum];
         std::string outputFile = "Result_" + inputFile;
 
-        if(inputFile != "20_4.txt") continue;
-        std::cout << inputFile << std::endl;
+        //std::cout << "inputFile: " << inputFile << std::endl
+        // << "outputFile: " << outputFile << std::endl;
 
-        input.open(GenerateWritable(inputFile));
-        output.open(GenerateWritable(outputFile));
+        std::ifstream input (inputFile);
 
-        std::cout << inputFile << " exists" << std::endl;
+        if(input.is_open()) {
 
-        while(true)
-        {
+            std::ofstream output;
+            output.open(outputFile);
+            std::string line;
 
-            input >> vote;
+            int vote_counter = 0;
 
-            if(vote == "fim") break;
+            while (getline(input,line)) {
+                std::istringstream iss(line);
 
-            if(vote[vote.length()-1] == ',')
-                vote.erase(vote.begin()+vote.length()-1);
+                while (iss >> vote) {
+                    vote_counter ++;
+                    if (vote[vote.length() - 1] == ',')
+                        vote.erase(vote.begin() + vote.length() - 1);
 
-            if (teachers["vote"] >= 0) teachers["vote"]++;
-            else teachers["vote"] = 1;
+                    if (teachers[vote] >= 0) teachers[vote]++;
+                    else teachers[vote] = 1;
+                }
+            }
 
-            for(auto it = teachers.begin(); it != teachers.end(); ++it)
+            for (auto it = teachers.begin(); it != teachers.end(); ++it)
                 output << it->first << ": " << it->second << std::endl;
         }
+
+        else
+            std::cout << inputFile << " could not be found" << std::endl;
+
+        output.close();
     }
 }
 

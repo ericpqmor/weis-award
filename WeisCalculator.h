@@ -9,6 +9,7 @@
 #include <vector>
 #include <map>
 #include <fstream>
+#include <sstream>
 
 /**
  * WeisCalculator é o módulo de lógica do programa.
