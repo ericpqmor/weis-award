@@ -25,6 +25,11 @@ WeisCalculator::~WeisCalculator() {
     teachers.clear();
 }
 
+/**
+ * Função que imprime o cabeçalho do Prêmio
+ * @return
+ */
+
 std::string WeisCalculator::PrettyPrint() {
     return " _  _ ____ __ ____     __  _  _  __  ____ ____ \n"
             "/ )( (  __|  ) ___)   / _\\/ )( \\/ _\\(  _ (    \\\n"
@@ -36,7 +41,7 @@ std::string WeisCalculator::PrettyPrint() {
 
 void WeisCalculator::Run() {
 
-    //Initialize statistics output file
+    //Inicializa o arquivo de output das estatísticas do prêmio
     std::ofstream specialOutput("Weis_Statistics.txt");
     specialOutput << PrettyPrint();
 
@@ -44,11 +49,9 @@ void WeisCalculator::Run() {
         std::string inputFile = inputFiles[fileNum];
         std::string outputFile = "Result_" + inputFile;
 
-        //std::cout << "inputFile: " << inputFile << std::endl
-        // << "outputFile: " << outputFile << std::endl;
-
         std::ifstream input (inputFile);
 
+        //Depois de identificar os files de input, output e specialOutput, tenta localizá-los em ./in-out
         if(input.is_open()) {
 
             std::cout << inputFile << " foi encontrado" << std::endl;
@@ -57,39 +60,48 @@ void WeisCalculator::Run() {
             output.open(outputFile);
             std::string line;
 
+            //Conta o numero total de votos de uma turma
             int totalVotes = 0;
 
             while (getline(input,line)) {
                 totalVotes++;
                 std::istringstream iss(line);
 
+                //Usa String Stream para isolar os votos
                 while (iss >> vote) {
                     if (vote[vote.length() - 1] == ',')
                         vote.erase(vote.begin() + vote.length() - 1);
 
+                    //Atualiza o map de professores com os votos ganhos
                     if (teachers[vote] >= 0) teachers[vote]++;
                     else teachers[vote] = 1;
                 }
             }
 
-            //Special output
+            //Output especial (Estatísticas do Prêmio)
             specialOutput << inputFile.substr(0,inputFile.length()-4) << " - ";
 
+            //Apuração dos votos
             for (auto it = teachers.begin(); it != teachers.end(); ++it) {
+
+                //No resultado individual das turmas, diz o professor, número de votos e porcentagem total
                 output << it->first << ": " << it->second << " (";
                 if(it->second == totalVotes) output << 100.0;
                 else output << std::setprecision(2) << 100.0*(it->second)/totalVotes;
                 output << "%)" << std::endl;
 
-                //Weis Statistics Output - In case of win, prints
                 int numVotes = it->second;
 
+                //Se o professor obteve um ganho percentual, entra para os professores premiados
                 if(numVotes >= win*totalVotes) {
+
+                    //Destaque (*Nome_do_Professor*) para os professores destacados
                     if(numVotes >= bigWin*totalVotes) specialOutput << "*" << it->first << "*";
                     else specialOutput << it->first;
 
                     specialOutput << " (";
 
+                    //Tenta evitar o erro do 1^e02%
                     if(numVotes == totalVotes) specialOutput << 100.0;
                     else specialOutput << std::setprecision(2) << 100.0 * numVotes / totalVotes;
 
@@ -99,16 +111,13 @@ void WeisCalculator::Run() {
 
             specialOutput << std::endl;
 
-            //Class statistics
+            //Estatisticas da turma
             output << std::endl;
             output << "Alunos que votaram: " << totalVotes << std::endl;
 
             teachers.clear();
             output.close();
         }
-
-        else
-            std::cout << inputFile << " nao foi encontrado" << std::endl;
 
     }
 }

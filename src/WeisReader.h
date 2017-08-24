@@ -3,7 +3,12 @@
 //
 
 #ifndef WEIS_AWARD_WEISREADER_H
-#define WEIS_AWARD_WEISREADER_H
+#define WEIS_AWARD_WEIS
+
+/**
+ * WeisReader é o módulo de identificação dos txts.
+ * Ele gera um std::vector<string> com a localização dos .txts de entrada
+ */
 
 class WeisReader {
 public:
