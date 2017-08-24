@@ -63,7 +63,7 @@ std::vector<std::string> WeisReader::DetermineInput() {
      */
     for(int num=refClass-2; num>refClass-5; num--)
         for(int course = 0; course<(int) prof.size(); course++)
-            input.push_back(prof[course] + "_" + std::to_string(num) + ".txt");
+            input.push_back(std::to_string(num) + "_" + prof[course]  + ".txt");
 
     return input;
 }

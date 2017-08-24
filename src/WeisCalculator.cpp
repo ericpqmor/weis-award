@@ -9,8 +9,15 @@ WeisCalculator::WeisCalculator() {
     std::cout << "Weis Calculator pode ser inicializado apenas com inputFiles" << std::endl;
 }
 
+/**
+ * Construtor do modulo.
+ * As variaveis 'win' e 'bigWin' podem ser alteradas para ditar
+ * os professores ganhadores e destacados
+ */
 WeisCalculator::WeisCalculator(std::vector <std::string> input) {
     this->inputFiles = input;
+    this->win = 0.65;
+    this->bigWin = 0.85;
 }
 
 WeisCalculator::~WeisCalculator() {
@@ -18,18 +25,20 @@ WeisCalculator::~WeisCalculator() {
     teachers.clear();
 }
 
-char *WeisCalculator::GenerateWritable(std::string file) {
-    char *writable = new char[file.length() + 1];
-    std::copy(file.begin(), file.end(), writable);
-    writable[file.length()] = '\0';
+std::string WeisCalculator::PrettyPrint() {
+    return " _  _ ____ __ ____     __  _  _  __  ____ ____ \n"
+            "/ )( (  __|  ) ___)   / _\\/ )( \\/ _\\(  _ (    \\\n"
+            "\\ /\\ /) _) )(\\___ \\  /    \\ /\\ /    \\)   /) D (\n"
+            "(_/\\_|____|__|____/  \\_/\\_(_/\\_)_/\\_(__\\_|____/\n"
+            "------------------------------------------------\n\n";
 
-    return writable;
 }
 
 void WeisCalculator::Run() {
 
     //Initialize statistics output file
     std::ofstream specialOutput("Weis_Statistics.txt");
+    specialOutput << PrettyPrint();
 
     for(int fileNum = 0; fileNum < (int)inputFiles.size(); fileNum++) {
         std::string inputFile = inputFiles[fileNum];
@@ -67,29 +76,39 @@ void WeisCalculator::Run() {
             specialOutput << inputFile.substr(0,inputFile.length()-4) << " - ";
 
             for (auto it = teachers.begin(); it != teachers.end(); ++it) {
-                output << it->first << ": " << it->second << " (" << std::setprecision(2) << 100.0*(it->second)/totalVotes << "%)" << std::endl;
+                output << it->first << ": " << it->second << " (";
+                if(it->second == totalVotes) output << 100.0;
+                else output << std::setprecision(2) << 100.0*(it->second)/totalVotes;
+                output << "%)" << std::endl;
 
-                //Weis Statistics Output
+                //Weis Statistics Output - In case of win, prints
                 int numVotes = it->second;
-                if(numVotes >= 0.85*totalVotes)
-                    specialOutput << "*" << it->first << "*" << "(" << std::setprecision(2) << 100.0*numVotes/totalVotes << "%) ";
-                else if(numVotes >= 0.65*totalVotes)
-                    specialOutput << it->first << "(" << std::setprecision(2) << 100.0*numVotes/totalVotes << "%) ";
+
+                if(numVotes >= win*totalVotes) {
+                    if(numVotes >= bigWin*totalVotes) specialOutput << "*" << it->first << "*";
+                    else specialOutput << it->first;
+
+                    specialOutput << " (";
+
+                    if(numVotes == totalVotes) specialOutput << 100.0;
+                    else specialOutput << std::setprecision(2) << 100.0 * numVotes / totalVotes;
+
+                    specialOutput << "%) ";
+                }
             }
+
+            specialOutput << std::endl;
 
             //Class statistics
             output << std::endl;
             output << "Alunos que votaram: " << totalVotes << std::endl;
 
-
+            teachers.clear();
             output.close();
         }
 
         else
             std::cout << inputFile << " nao foi encontrado" << std::endl;
 
-        //Separate years by blank line
-        if(fileNum%4 == 3) specialOutput << std::endl;
     }
 }
-

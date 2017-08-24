@@ -26,7 +26,7 @@ public:
 
     ~WeisCalculator();
 
-    char *GenerateWritable(std::string file);
+    std::string PrettyPrint();
 
     void Run();
 
@@ -34,6 +34,10 @@ private:
     std::vector<std::string> inputFiles;
     std::map<std::string,int> teachers;
     std::string vote;
+
+    //Determine the percentual of votes necessary to win (or big win) the award
+    double bigWin;
+    double win;
 
 
 };

@@ -1,0 +1,16 @@
+# Arquivos básicos de exclusão: .a, .o, backup
+*.a
+*.o
+*.so*
+*~
+
+# Arquivos gerados automaticamente na compilação
+CMakeCache.txt
+CMakeFiles/
+Makefile*
+cmake_install.cmake
+*.cbp
+cmake-build-debug/
+
+# CLion
+.idea/
