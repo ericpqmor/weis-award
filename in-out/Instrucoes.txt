@@ -1,0 +1,2 @@
+1. Ponha aqui os files que devem ser lidos (Ex.: 20_4.txt, COMP_20.txt)
+2. Aqui também será o ponto de saída dos files com o resultado, incluindo o Weis_Statistics.txt
